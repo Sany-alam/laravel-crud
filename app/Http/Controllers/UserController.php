@@ -27,9 +27,14 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $req)
     {
-        //
+        $query = user::create([
+            'name' => $req->name,
+            'email' => $req->email,
+            'Contact' => $req->phone,
+            'password' => $req->password
+        ]);
     }
 
     /**

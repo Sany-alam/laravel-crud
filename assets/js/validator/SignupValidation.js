@@ -1,10 +1,21 @@
+// $(function() {
+//   name = $("#name").val();
+//   $("#signup").click(function() {
+//     if ($("#name").val().length === 0) {
+//       $("#name").addClass("is-invalid");
+//       $(".name.invalid-feedback").html("Required field");
+//       alert("invalid");
+//     }
+//     else if($("#name").val().length > 0){
+//       $("#name").removeClass("is-invalid");
+//       $("#name").addClass("is-valid");
+//       $(".name.valid-feedback").html("Good");
+//       alert("valid");
+//     }
+//   });
+// });
+
 $(function(){
-  $('.datepicker-input').datepicker();
-  // alert("hello world");
-  $("#name_alert").hide();
-  $("#email_alert").hide();
-  $("#password_alert").hide();
-  $("#rpassword_alert").hide();
 
   // varriables for return true or false from success function
   var valid_name = false;
@@ -12,60 +23,39 @@ $(function(){
 
 //Name
   $("#name").focusout(function(){
-    name();
+    fullname();
   });
 
-  function name()
+  function fullname()
   {
     if($("#name").val().length == 0)
     {
-      $("#name_alert").html("Name is required!");
-      $("#name_alert").show();
+      $("#name").removeClass("is-valid");
+      $("#name").addClass("is-invalid");
+      $(".name.invalid-feedback").html("Required field");
       return true;
     }
     else
     {
-      var name = $("#name").val();
-      var formdata = new FormData();
-      formdata.append("name",name);
-      formdata.append("name_check",'name_check');
-      $.ajax({
-        processData:false,
-        contentType:false,
-        data:formdata,
-        type:"post",
-        url:"l&s.php",
-        success:function(data)
-        {
-          var msg = $.trim(data);
-          if (msg == "Found a name")
-          {
-            valid_name = true;
-            $("#name_alert").html("Username already exiest, username must be unique!");
-            $("#name_alert").show();
-          }
-          else if (msg == "Found no name")
-          {
-            valid_name = false;
-            $("#name_alert").hide();
-          }
-        }
-      });
-      return valid_name;
+      $("#name").removeClass("is-invalid");
+      $("#name").addClass("is-valid");
+      $(".name.valid-feedback").html("Good");
+      return false;
     }
   }
 
 
 //Email
   $("#email").focusout(function(){
-    email();
+    useremail();
   });
 
-  function email()
+  function useremail()
   {
     if ($("#email").val().length == 0) {
-      $("#email_alert").html("Email is requierd");
-      $("#email_alert").show();
+      $("#email").removeClass("is-valid");
+      $("#email").addClass("is-invalid");
+      $(".email.invalid-feedback").html("Required field");
       return true;
     }
     else
@@ -73,40 +63,46 @@ $(function(){
       var pattern = new RegExp(/^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i);
       if(!pattern.test($("#email").val()))
       {
-        $("#email_alert").html("invalid email type");
-        $("#email_alert").show();
-        return true;
+        $("#email").removeClass("is-valid");
+      $("#email").addClass("is-invalid");
+      $(".email.invalid-feedback").html("Invalid email type");
+      return true;
       }
       else
       {
-        var email = $("#email").val();
-        var valid = false;
-        var formdata = new FormData();
-        formdata.append("email",email);
-        formdata.append("email_check",'email_check');
-        $.ajax({
-          processData:false,
-          contentType:false,
-          data:formdata,
-          type:"post",
-          url:"l&s.php",
-          success:function(data)
-          {
-            var msg = $.trim(data);
-            if (msg == "found email")
-            {
-              valid_email = true;
-              $("#email_alert").html("Email already exiest, Email must be unique!");
-              $("#email_alert").show();
-            }
-            else if(msg == "Found no email")
-            {
-              $("#email_alert").hide();
-              valid_email = false;
-            }
-          }
-        });
-        return valid_email;
+        $("#email").removeClass("is-invalid");
+        $("#email").addClass("is-valid");
+        $(".email.valid-feedback").html("Good");
+        return false;
+        // **** valid email *****
+        // var email = $("#email").val();
+        // var valid = false;
+        // var formdata = new FormData();
+        // formdata.append("email",email);
+        // formdata.append("email_check",'email_check');
+        // $.ajax({
+        //   processData:false,
+        //   contentType:false,
+        //   data:formdata,
+        //   type:"post",
+        //   url:"l&s.php",
+        //   success:function(data)
+        //   {
+        //     var msg = $.trim(data);
+        //     if (msg == "found email")
+        //     {
+        //       valid_email = true;
+        //       $("#email_alert").html("Email already exiest, Email must be unique!");
+        //       $("#email_alert").show();
+        //     }
+        //     else if(msg == "Found no email")
+        //     {
+        //       $("#email_alert").hide();
+        //       valid_email = false;
+        //     }
+        //   }
+        // });
+        // return valid_email;
       }
     }
   }
@@ -116,37 +112,42 @@ $(function(){
 
 //password
 $("#password").focusout(function(){
-  pass();
+  userpass();
 });
-function pass()
+function userpass()
 {
   if($("#password").val().length == 0)
     {
-      $("#password_alert").html("password is required");
-      $("#password_alert").show();
+      $("#password").removeClass("is-valid");
+      $("#password").addClass("is-invalid");
+      $(".password.invalid-feedback").html("Required field");
       return true;
     }
    else
    {
      if( $("#password").val().length<8)
      {
-       $("#password_alert").html("Minimum 8 character and password should contain One Uppercase, One lowercase,one number, one special character");
-       $("#password_alert").show();
-       return true;
+        $("#password").removeClass("is-valid");
+        $("#password").addClass("is-invalid");
+        $(".password.invalid-feedback").html("Minimum 8 character");
+        return true;
      }
      else
      {
        var password_reg_ex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])");
        if(!password_reg_ex.test($("#password").val()))
        {
-         $("#password_alert").html("Minimum 8 character and password should contain One Uppercase, One lowercase,one number, one special character");
-         $("#password_alert").show();
-         return true;
+          $("#password").removeClass("is-valid");
+          $("#password").addClass("is-invalid");
+          $(".password.invalid-feedback").html("password should contain One Uppercase, One lowercase,one number, one special character");
+          return true;
        }
        else
        {
-         $("#password_alert").hide();
-         return false;
+        $("#password").removeClass("is-invalid");
+        $("#password").addClass("is-valid");
+        $(".password.valid-feedback").html("Good");
+        return false;
        }
      }
    }
@@ -156,201 +157,127 @@ function pass()
 
 // Retype password
 $("#rpassword").focusout(function(){
-  rpass();
+  userrpass();
 });
-function rpass()
+function userrpass()
 {
   if ($("#rpassword").val().length !== 0)
   {
     if ($("#rpassword").val() == $("#password").val())
     {
-      $("#rpassword_alert").hide();
-      return false;
+        $("#rpassword").removeClass("is-invalid");
+        $("#rpassword").addClass("is-valid");
+        $(".rpassword.valid-feedback").html("Good");
+        return false;
     }
     else
     {
-      $("#rpassword_alert").html("Password not matched");
-      $("#rpassword_alert").show();
+      $("#rpassword").removeClass("is-valid");
+      $("#rpassword").addClass("is-invalid");
+      $(".rpassword.invalid-feedback").html("Password not matched");
       return true;
     }
   }
   else
   {
-    $("#rpassword_alert").html("Confirm password requierd");
-    $("#rpassword_alert").show();
+    $("#rpassword").removeClass("is-valid");
+    $("#rpassword").addClass("is-invalid");
+    $(".rpassword.invalid-feedback").html("Confirm password requierd");
     return true;
   }
 }
 
 
-// $("#address").focusout(function(){
-//   addr();
-// });
-
-// function addr() 
-// {
-//   if ($("#address").val().length == 0)
-//   {
-//     $("#address_alert").html("Address is required");
-//     $("#address_alert").show();
-//     return true;
-//   }
-//   else
-//   {
-//     $("#address_alert").hide();
-//     return false;
-//   }
-// }
 
 
-// $("#city").focusout(function(){
-//   cty();
-// });
-
-// function cty() 
-// {
-//   if ($("#city").val().length == 0)
-//   {
-//     $("#city_alert").html("State & City is required");
-//     $("#city_alert").show();
-//     return true;
-//   }
-//   else
-//   {
-//     $("#city_alert").hide();
-//     return false;
-//   }
-// }
-
-
-
-$("#phone").focusout(function(){
-  phn();
+$("#contact").focusout(function(){
+  userphn();
 });
 
-function phn() 
+function userphn() 
 {
-  if ($("#phone").val().length == 0) 
+  if ($("#contact").val().length == 0) 
   {
-    $("#phone_alert").html("Phone number is required");
-    $("#phone_alert").show();
+    $("#contact").removeClass("is-valid");
+    $("#contact").addClass("is-invalid");
+    $(".contact.invalid-feedback").html("Contact number is required");
     return true;
   }
   else
   {
-    $("#phone_alert").hide();
+    $("#contact").removeClass("is-invalid");
+    $("#contact").addClass("is-valid");
+    $(".contact.valid-feedback").html("Good");
     return false;
   }
 }
 
 
 
-// $("#birthdate").focusout(function(){
-//   bd();
-// });
-
-// function bd() 
-// {
-//   if ($("#birthdate").val().length == 0) 
-//   {
-//     $("#birthdate_alert").html("Birth date is required");
-//     $("#birthdate_alert").show();
-//     return true;
-//   }
-//   else
-//   {
-//     $("#birthdate_alert").hide();
-//     return false;
-//   }
-// }
-
-
-// $("#submit-next-2").click(function() {
-  // $("#pp-form").slideUp();
-  // $("#final-form").slideDown();
-// });
-
-
-$("#submit").click(function(){
-  if (name() == false && email() == false && phn() == false && pass() == false  && rpass() == false) {
+$("#signup").click(function(){
+  if (fullname() == false && useremail() == false && userphn() == false && userpass() == false  && userrpass() == false) {
 
 var name = $("#name").val();
 var email = $("#email").val();
 var password= $("#password").val();
-var phone = $("#phone").val();
+var phone = $("#contact").val();
 
-// alert(name+" "+email+" "+password+" "+address+" "+city+" "+phone+" "+pp+" "+language+" "+birthdate);
+// alert(name+" "+email+" "+password+"  "+phone);
 
   var formdata = new FormData();
   formdata.append('name',name);
   formdata.append('email',email);
   formdata.append('phone',phone);
   formdata.append('password',password);
-  formdata.append('signup',"signup");
+  // formdata.append('_token','{{ csrf_token() }}');
   $.ajax({
     processData:false,
     contentType:false,
     data:formdata,
-    type:"post",
-    url:"l&s.php",
+    type:"POST",
+    url:"signupsubmit",
     success:function(data)
     {
-      var msg = $.trim(data);
-      if (msg == "congo")
-      {
-        location.href="index.php"
-      }
-      else {
-        alert("something went wrong");
-      }
+      location.href="/";
     }
   });
 
   }
   else{
     
-    if (name() == true)
+    if (fullname() == true)
     {
-      $("#name_alert").show();
+      fullname();
     }
 
-    if (email() == true)
+    if (useremail() == true)
     {
-      $("#email_alert").show();
+      useremail();
     }
 
-    if (phn() == true)
+    if (userphn() == true)
     {
-      $("#phone_alert").show();
+      userphn();
     }
 
-    if (pass() == true)
+    if (userpass() == true)
     {
-      $("#password_alert").show();
+      userpass();
     }
 
 
-    if (rpass() == true)
+    if (userrpass() == true)
     {
-      $("#rpassword_alert").show();
+      userrpass();
     }
   }
 });
 
-// $("#final-form").hide();
 
-//click the button
-//   $("#submit-next").click(function(){
-//     if()
-//     {
-//       $("#initial-form").slideUp();
-//       $("#final-form").slideDown();
-//     }
-//     else
-//     {
+});
 
-
-//     }
-
-//   });
+// $.ajaxSetup({ 
+//   headers: { 
+//     'csrftoken' : '{{ csrf_token() }}' 
+//   } 
 // });
